@@ -8,9 +8,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "node test.js",
-    "heroku-postbuild": "webpack -p",
-    "build": "webpack --mode production"
+    "heroku-postbuild": "webpack -p"
   },
   "dependencies": {
     "ejs": "^2.5.6",
