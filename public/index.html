@@ -15,71 +15,66 @@
 </head>
 <body>
 	<script>
-
-
 	// create an new instance of a pixi stage
 	var stage = new PIXI.Stage(0xFFFFFF, true);
 
 	stage.setInteractive(true);
 
-	//var sprite =  PIXI.Sprite.fromImage("spinObj_02.png");
-	//stage.addChild(sprite);
 	// create a renderer instance
-	//var renderer = new PIXI.CanvasRenderer(800, 600);//PIXI.autoDetectRenderer(800, 600);
 	var renderer = PIXI.autoDetectRenderer(620, 380);
 
 	// set the canvas width and height to fill the screen
-	//renderer.view.style.width = window.innerWidth + "px";
-	//renderer.view.style.height = window.innerHeight + "px";
 	renderer.view.style.display = "block";
 
 	// add render view to DOM
 	document.body.appendChild(renderer.view);
 
 	var graphics = new PIXI.Graphics();
-	// lets create moving shape
 
+	//render the moving frame
 	var center_x = 620/2;
 	var center_y = 380/2;
 	var frame_w = 240;
 	var frame_h = 200;
 
+	const texture = PIXI.Texture.fromImage('test_image.tif');
+
 	var thing = new PIXI.Graphics();
+
+	const test_image = new PIXI.Sprite(texture);
+    test_image.anchor.x = 0;
+	test_image.anchor.y = 0;
+    test_image.x = 0;
+    test_image.y = 0;
+	console.log(test_image.anchor.x + ", " + test_image.anchor.y + ", " + test_image.x + ", " + test_image.y);
+
 	thing.lineStyle(30, 0xff0000, 1);
 	thing.drawRect(-(frame_w/2), -(frame_h/2), frame_w, frame_h);
 	stage.addChild(thing);
 	thing.position.x = center_x;
 	thing.position.y = center_y;
-
-	stage.click = stage.tap = function()
-	{
-		graphics.lineStyle(Math.random() * 30, Math.random() * 0xFFFFFF, 1);
-	    graphics.moveTo(Math.random() * 620,Math.random() * 380);
-		graphics.lineTo(Math.random() * 620,Math.random() * 380);
-	}
-
-	requestAnimFrame(animate);
+	thing.addChild(test_image);
 
 	var max_count = -center_x + -(frame_w / 2);
-	var count = max_count;
 
-	function animate() {
+	stage.click = stage.tap = function() {
+		requestAnimFrame(animateIn(max_count));
+	}
+	requestAnimFrame(animateIn(max_count));
 
-		count += 10;
-
-		thing.position.x = center_x + count;
-		thing.position.y = center_y + (count / 9);
-
-		console.log(thing.position.x + ", " + thing.position.y);
-
-		thing.rotation = -(Math.PI / 2) - ((-Math.PI / 4) / max_count) * count;
-	    renderer.render(stage);
-		if (count < 0) {
-	    	requestAnimFrame( animate );
+	function animateIn(count) {
+		return function() {
+			count += 10;
+			thing.position.x = center_x + count;
+			thing.position.y = center_y + (count / 9);
+			thing.rotation = -(Math.PI / 2) - ((-Math.PI / 4) / max_count) * count;
+		    renderer.render(stage);
+			if (count < 0) {
+		    	requestAnimFrame( animateIn(count) );
+			}
 		}
 	}
 
 	</script>
-
 	</body>
 </html>
