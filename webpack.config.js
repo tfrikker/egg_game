@@ -1,16 +1,15 @@
 module.exports = {
-    // 1
     entry: './src/index.js',
-    // 2
     output: {
       path: __dirname + '/public',
       publicPath: '/',
       filename: 'bundle.js'
     },
-    // 3
+    // uncomment these two lines to make life easier on dev
+    // watch: true,
+    // devtool: "source-map",
     devServer: {
       contentBase: './dist'
-    },
-    watch: true
+    }
   };
   
