@@ -1,6 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
+const Data = require('./data.js');
+const Util = require('./util.js');
 
 //http://stackoverflow.com/questions/11001817/allow-cors-rest-request-to-a-express-node-js-application-on-heroku
 app.use(function(req, res, next) {
@@ -19,7 +21,7 @@ app.get('/', function(request, response) {
 
 // Probability Tools:
 
-// multiply two gaussians {mean: #, sigma: #}. Returns gaussian
+// multiplies two gaussians {mean: #, sigma: #}
 function multBell(bell_a, bell_b) {
 	return {
 		mean: (bell_a.mean*bell_b.sigma*bell_b.sigma + bell_b.mean*bell_a.sigma*bell_a.sigma) /
@@ -28,7 +30,7 @@ function multBell(bell_a, bell_b) {
 					 Math.sqrt(bell_a.sigma*bell_a.sigma + bell_b.sigma*bell_b.sigma)
 	}
 }
-// generate random variable from gaussian
+// generates random variable from gaussian
 function randBell(bell) {
   let u = Math.random()*0.682;
   return ((u % 1e-8 > 5e-9 ? 1 : -1) * (Math.sqrt(-Math.log(Math.max(1e-9, u)))-0.618))*1.618 * bell.sigma + bell.mean;
@@ -42,10 +44,7 @@ function sampleBell(bell,x,normalized=true){
 	let x_std = (x-bell.mean)/bell.sigma; // x transformed to standard gaussian
 	return coeff*Math.exp(-.5*x_std*x_std);
 }
-// generate random int between min (inclusive) and max (exclusive)
-function randIntRange(min, max) {
-	return Math.floor(Math.random() * (max - min)) + min;
-}
+
 // normalize a list of numbers
 function norm(list) {
 	var sum = 0;
@@ -58,7 +57,7 @@ function norm(list) {
 		norm_list[i] /= sum;
 	}
 }
-// weighted discrete random variable
+// returns weighted discrete random variable
 function randIntWeighted(weights) {
 	var weights = norm(weights)
 	var uniform = Math.random();
@@ -73,30 +72,74 @@ function randIntWeighted(weights) {
 	return 0; //unreachable
 }
 
-function generateRandomBuyer() {
-	var randomBuyerIndex = randIntRange(0, buyers.length);
-	return buyers[randomBuyerIndex];
+function getRandomSubarray(arr, size) {
+    var shuffled = arr.slice(0), i = arr.length, temp, index;
+    while (i--) {
+        index = Math.floor((i + 1) * Math.random());
+        temp = shuffled[index];
+        shuffled[index] = shuffled[i];
+        shuffled[i] = temp;
+    }
+    return shuffled.slice(0, size);
+}
+
+function sumValue(buyer, deal) {
+	var totalValue = 0;
+	deal.forEach(function (item) {
+		if (item.type in buyer.typePrefs) {
+			totalValue += buyer.typePrefs[item.type];
+		} else {
+			totalValue += 10;
+		}
+	});
+
+	return totalValue;
 }
 
 function generateTrade(buyer, inventory) {
-	//TODO implement
-	return {
-		"itemsSelling": [items["moldyOrange"], items["sodaCan"]],
-		"itemsBuying": [items["egg"]]
-	}
-}
+	//var dealSize = {
+	//	mean: buyer.dealSize,
+	//	sigma: 20
+	//}
+	//var profit = { //TODO currently not used - refine later?
+	//	mean: 0,
+	//	sigma: 1 / buyer.saviness
+	//}
 
-function getItem(id) {
-	items.forEach(function(element) {
-  		if (element.id == id) {
-			return element;
+	var dealValue;
+	var deal;
+	var dealSizeFudge = 0;
+	for (var i = 0;; i++) {
+		//get a random subset of inventory items from user
+		var deal = getRandomSubarray(inventory, Util.randIntRange(1, inventory.length));
+		//calculate its value to this buyer
+		dealValue = sumValue(buyer, deal);
+		//if in the buyer's ideal fudge range, great!
+		if (dealValue > buyer.dealSize - dealSizeFudge && dealValue < buyer.dealSize + dealSizeFudge) {
+			break;
 		}
-	});
+		//if not, expand what the buyer is willing to accept if we keep failing to find a match
+		if (i % 5 == 0) {
+			dealSizeFudge++;
+		}
+	}
+
+	//TODO: built up based on value of deal and keyItemsToTrade
+	var stuffToSell = [];
+	for (var i = 0; i<dealValue; i+=10) {
+ 		stuffToSell.push(buyer.inventory[Util.randIntRange(0,buyer.inventory.length)]);
+	}
+
+	return {
+		"itemsSelling": stuffToSell,
+		"itemsBuying": deal
+	}
 }
 
 app.get('/newTrade', function(request, response) {
 	var inventory = request.body.inventory;
-	var buyer = generateRandomBuyer();
+	var inventory = Data.items; //TODO: only for testing
+	var buyer = Data.generateRandomBuyer();
 	var trade = generateTrade(buyer, inventory);
 	response.send({
 		"buyer": buyer,
@@ -105,237 +148,3 @@ app.get('/newTrade', function(request, response) {
 });
 
 app.listen(process.env.PORT || 5000);
-
-var items = [
-	{
-		id: "egg",
-		name: "Egg",
-		tags: ["food"],
-		image: "/images/items/egg.png",
-		text: "A beginning."
-	},
-	{
-		id: "moldyOrange",
-		name: "moldyOrange",
-		tags: ["food"],
-		image: "/images/items/moldy_orange.png",
-		text: "Green and squishy. Yuck."
-	},
-	{
-		id: "goldfishCrackers",
-		name: "Goldfish (crackers)",
-		tags: ["food"],
-		image: "/images/items/goldfish_crackers.png",
-		text: "Soggier than you can imagine."
-	},
-	{
-		id: "sodaCan",
-		name: "Soda Can",
-		tags: ["drink"],
-		image: "/images/items/soda_can.png",
-		text: "Something liquid is inside, but it's unclear exactly what."
-	},
-	{
-		id: "juiceBox",
-		name: "Juice Box",
-		tags: ["drink"],
-		image: "/images/items/juice_box.png",
-		text: "Grape flavored. No wonder it's down here."
-	},
-	{
-		id: "shiv",
-		name: "Shiv",
-		tags: ["cutting"],
-		image: "/images/items/shiv.png",
-		text: "Be careful - it's sharp."
-	},
-	{
-		id: "fishHook",
-		name: "Fish Hook",
-		tags: ["cutting"],
-		image: "/images/items/fish_hook.png",
-		text: "Once caught a fish at least *this* big."
-	},
-	{
-		id: "magicMushroom",
-		name: "Magic Mushroom",
-		tags: ["light"],
-		image: "/images/items/magic_mushroom.png",
-		text: "Bioluminescent and proud."
-	},
-	{
-		id: "floodlight",
-		name: "Floodlight",
-		tags: ["light"],
-		image: "/images/items/floodlight.png",
-		text: "Just needs a bulb."
-	},
-	{
-		id: "spyDossier",
-		name: "Top Secret Spy Dossier",
-		tags: ["mystery"],
-		image: "/images/items/spy_dossier.png",
-		text: "It's got the dirt and is also covered in it. Score!"
-	},
-	{
-		id: "mysteriousBriefcase",
-		name: "Mysterious Briefcase",
-		tags: ["mystery"],
-		image: "/images/items/mysterious_briefcase.png",
-		text: "Probably full of worms. *Mysterious* worms."
-	},
-	{
-		id: "bagODrugs",
-		name: "Bag O' Drugs",
-		tags: ["mystery"],
-		image: "/images/items/drugs_bag.png",
-		text: "You never know what you're gonna get!"
-	},
-	{
-		id: "deadGoldfish",
-		name: "Dead Goldfish",
-		tags: ["carrion"],
-		image: "/images/items/dead_goldfish.png",
-		text: "Named Rufus, in happier times."
-	},
-	{
-		id: "dessicatedLizard",
-		name: "Dessicated Lizard",
-		tags: ["carrion"],
-		image: "/images/items/dead_lizard.png",
-		text: "Could make some good jerky if you put your mind to it."
-	},
-	{
-		id: "wombatPoop",
-		name: "Wombat Poop",
-		tags: ["flair"],
-		image: "/images/items/wombat_poop.png",
-		text: "Nuggets of inspiration."
-	},
-	{
-		id: "extravagantHat",
-		name: "Extravagant Hat",
-		tags: ["flair"],
-		image: "/images/items/extravagantHat.png",
-		text: "A fez that, when rotated, reminds you of something."
-	}
-]
-
-
-var buyers = [
-	{
-		id: "marty",
-		name: "Marty the Cockroach",
-		image: "/images/buyers/marty.tif",
-		typePrefs: {
-			"mystery": 20,
-			"food": 5
-		},
-		keyItemsToTrade: {
-			//TODO: handle
-			"shiv": 20
-		},
-		itemPrefs: {},
-		dealSize: 20,
-		saviness: 1
-	},
-	{
-		id: "winifred",
-		name: "Winifred the Bat",
-		image: "/images/buyers/winifred.tif",
-		typePrefs: {
-			"food": 20,
-			"light": 5
-		},
-		keyItemsToTrade: {
-			"magicMushroom": 20,
-			"sodaCan": 20,
-			"bagODrugs": 20
-		},
-		itemPrefs: {},
-		dealSize: 20,
-		saviness: 1
-	},
-	{
-		id: "moe",
-		name: "Moe the Moth",
-		image: "/images/buyers/moe.tif",
-		typePrefs: {
-			"lamp": 30,
-			"food": 5,
-			"flair": 5
-		},
-		keyItemsToTrade: {
-			"moldyOrange": 20,
-			"extravagantHat": 20
-		},
-		itemPrefs: {},
-		dealSize: 20,
-		saviness: 1
-	},
-	{
-		id: "goldie",
-		name: "Goldie the Goldfish",
-		image: "/images/buyers/goldie.tif",
-		typePrefs: {
-			"flair": 20,
-			"cutting": 5
-		},
-		keyItemsToTrade: {
-			"juiceBox": 20,
-			"fishHook": 20,
-			"goldfishCrackers": 30
-		},
-		itemPrefs: {},
-		dealSize: 20,
-		saviness: 1
-	},
-	{
-		id: "whiskers",
-		name: "Mr. Whiskers the Rat",
-		image: "/images/buyers/whiskers.tif",
-		typePrefs: {
-			"drink": 20,
-			"carrion": 5
-		},
-		keyItemsToTrade: {
-			"deadGoldfish": 20,
-			"wombatPoop": 20
-		},
-		itemPrefs: {},
-		dealSize: 20,
-		saviness: 1
-	},
-	{
-		id: "ratKing",
-		name: "The Rat King",
-		image: "/images/buyers/rat_king.tif",
-		typePrefs: {
-			"cutting": 20,
-			"mystery": 5
-		},
-		keyItemsToTrade: {
-			"mysteriousBriefcase": 20,
-			"dessicatedLizard": 20
-		},
-		itemPrefs: {},
-		dealSize: 20,
-		saviness: 1
-	},
-	{
-		id: "bourdeaux",
-		name: "Bordeaux the Alligator",
-		image: "/images/buyers/bordeaux.tif",
-		typePrefs: {
-			"carrion": 20,
-			"light": 5
-		},
-		keyItemsToTrade: {
-			"spyDossier": 20,
-			"floodlight": 20
-		},
-		itemPrefs: {},
-		dealSize: 20,
-		saviness: 1
-	}
-];
