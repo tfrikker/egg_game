@@ -1,4 +1,5 @@
 import { test_function } from './test_module';
+import { createTradeWindow } from './trade_ui';
 
 const WIDTH = 400
 const HEIGHT = 700
@@ -22,43 +23,12 @@ function main(){
     var frame_w = 100;
     var frame_h = 150;
 
-    const texture = PIXI.Texture.fromImage('./img/test_image.png');
+    const tradeWindow = createTradeWindow();
+    app.stage.addChild(tradeWindow);
 
-    window.text = texture;
-    var card = new PIXI.Graphics();
-
-    const test_image = new PIXI.Sprite(texture);
-
-    let style = new PIXI.TextStyle({
-        fontFamily: "Arial",
-        fontSize: 36,
-        fill: "#ff0099",
-        // stroke: '#ff3300',
-        // strokeThickness: 4
-      });
-    let message = new PIXI.Text("Hello ", style);
-    message.position = {x: 54, y: 96};
-      
-
-    app.stage.addChild(message);
-
-    test_image.y = 110;
-    var background = new PIXI.Graphics();
-    card.fill = "#ff0099"
-    background.beginFill(0xffffff);
-    background.drawRect(0,0,WIDTH,HEIGHT);
-    background.endFill();
-
-    card.lineStyle(30, 0xff0000, 1);
-    card.drawRect(0, 0, frame_w, frame_h);
-    app.stage.addChild(background);
-    app.stage.addChild(test_image)
-    app.stage.addChild(message);
-    app.stage.addChild(card);
     app.ticker.add(delta => gameLoop(delta));
-    
     function gameLoop(delta){
-        card.x += 1*delta;
+        // card.x += 1*delta;
     }
 
 }
