@@ -31,13 +31,14 @@ export class TradeWindow extends PIXI.Container {
     }
 
     update(){
+        var trade = getTrade()
         console.log("Updating tradeData");
-        this.portrait.update(tradeData.buyer)
+        this.portrait.update(trade.buyer)
 
         this.portrait.width = 128 // NOTE: this shouldn't be necessary, final images can be saved at the correct size
         this.portrait.height = 128
 
-        tradeData.trade.itemsSelling.forEach((itemData, i) => {
+        trade.trade.itemsSelling.forEach((itemData, i) => {
             const newItem = new InspectableImage(itemData);
             newItem.position.set(30 + i * 80, 0);
             this.offerings.addChild(newItem);
