@@ -1,4 +1,4 @@
-import { createTradeWindow } from './trade_ui';
+import { tradeWindow } from './index';
 
 var inventory = [];
 
@@ -27,7 +27,7 @@ const getNewTrade = () => {
     $.post( location.protocol + "/newTrade", { inventory: JSON.stringify(inventory) }, function(data) {
         console.log("getNewTrade: new trade returned from server");
         console.log(data);
-        createTradeWindow(data)
+        tradeWindow.update(data);
     });
 }
 
