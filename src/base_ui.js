@@ -6,8 +6,9 @@ import { getTexture } from './texture_bag';
 export const WIDTH = 375
 export const HEIGHT = 667
 
-export class InspectableImage{
+export class InspectableImage extends PIXI.Container{
     constructor(data){
+        super();
         this.sprite = new PIXI.Sprite(getTexture(data.image))
         this.flavorText = data.text
         this.sprite.interactive = true;
@@ -16,6 +17,7 @@ export class InspectableImage{
             //TODO: create this function
             // window.setMessage(this.flavorText)
         });
+        this.addChild(this.sprite);
     }
     update(data){
         this.sprite.texture = getTexture(data.image)

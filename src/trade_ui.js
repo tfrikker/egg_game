@@ -5,37 +5,37 @@ import { InspectableImage, BGElem } from './base_ui';
 import { MESSAGE_STYLE } from './styles';
 
 
-export class TradeWindow{
+export class TradeWindow extends PIXI.Container {
 
     constructor(tradeData){
+        super();
         const WIDTH = 500
         const HEIGHT = 400
         const portraitHeight = 128;
 
-        this.container = new PIXI.Container();
-
 
         this.background = BGElem(0, 0, WIDTH, HEIGHT, 0xFFFFFF);
-        this.container.addChild(this.background);
+        this.addChild(this.background);
 
         this.portrait = new InspectableImage({image: './img/test_image.png', text:'flavor!'})
         this.portrait.width = this.portrait.width/this.portrait.height*portraitHeight
         this.portrait.height = portraitHeight
-        this.container.addChild(this.portrait.sprite);
+        this.addChild(this.portrait.sprite);
 
+
+
+        // tradeData.itemsBuying.forEach((imagePath, i) => {
+        //
+        // }
         this.offerings = new PIXI.Container();
 
-        // TODO: replace this with sensible data
-        [
-            './img/test_item.png',
-            './img/test_item.png',
-            './img/test_item.png'
-        ].forEach((imagePath, i) => {
-            const offering = new InspectableImage({image: imagePath, text:'flavor!'})
-            offering.sprite.position.set(30 + i * 80,0);
-            this.offerings.addChild(offering.sprite)
-        })
-        this.container.addChild(this.offerings)
+        tradeData.itemsSelling.forEach((itemData, i) => {
+            const newItem = new InspectableImage(itemData);
+            item.sprite.position.set(30 + i * 80, 0);
+            this.offerings.addChild(newItem);
+        });
+
+        this.addChild(this.offerings)
     }
 
     update(tradeData){
