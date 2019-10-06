@@ -1,8 +1,9 @@
 import { processTrade } from './gameState';
+import { getTexture } from './texture_bag';
 
 const createSprite = (path, x = 0, y = 0) => {
     const sprite = new PIXI.Sprite(
-        PIXI.Texture.fromImage(path)
+        getTexture(path)
     );
 
     sprite.position.set(x,y)
