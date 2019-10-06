@@ -31,10 +31,73 @@ const MESSAGE_STYLE = new PIXI.TextStyle({
     wordWrapWidth: 200
 });
 
+class InspectableImage{
+    constructor(data){
+        this.sprite = new PIXI.Sprite(getTexture(data.image))
+        this.messageText = data.text
+        this.sprite.interactive = true;
+        this.sprite.on('pointerdown', () => {
+            console.log(this.messageText)
+            //TODO: create this function
+            // window.setMessage(this.messageText)
+        });
+    }
+    update(data){
+        this.sprite.texture = getTexture(data.image)
+        this.messageText = data.text
+    }
+}
+
+
+class TradeWindow{
+
+    constructor(tradeData){
+        const WIDTH = 500
+        const HEIGHT = 400    
+        const portraitHeight = 128;
+
+        this.container = new PIXI.Container();
+        this.background = new PIXI.Graphics();
+    
+        this.background.beginFill(0xffffff);
+        this.background.drawRect(0, 0, WIDTH, HEIGHT);
+        this.background.endFill();
+        this.container.addChild(this.background);
+    
+        this.portrait = new InspectableImage({image: './img/test_image.png', text:'flavor!'})
+        this.portrait.width = portrait.width/this.portrait.height*portraitHeight
+        this.portrait.height = portraitHeight
+        this.container.addChild(this.portrait);
+
+
+        this.offerings = new PIXI.Container();
+
+        // TODO: replace this with sensible data
+        [
+            './img/test_item.png',
+            './img/test_item.png',
+            './img/test_item.png'
+        ].forEach((imagePath, i) => {
+            const offering = new InspectableImage({image: imagePath, text:'flavor!'})
+            container.addChild(offering);
+            offering.position.set(30 + i * 80,0);
+            this.offerings.addChild(offering)
+        })
+    }
+
+    update(tradeData){
+        //TODO: go through and update all the things
+        // this.portrait.update()
+        this.offerings.forEach(offering => {
+            // offering.update({})
+        })
+    }
+}
+
 const createTradeWindow = (trade) => {
     const WIDTH = 500
     const HEIGHT = 400
-    const portraitHeight = 140;
+    const portraitHeight = 128;
 
     const container = new PIXI.Container();
     const background = new PIXI.Graphics();
