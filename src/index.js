@@ -1,9 +1,17 @@
 import { createTradeWindow } from './trade_ui';
-import { getNewTrade } from './gameState';
+import { getNewTrade, getInventory } from './gameState';
+import {
+  BGRoundedElem,
+  createDialogElement,
+  createInventoryContainerElement,
+  createTradeButtonContainerElement,
+  BGElem,
+  WIDTH,
+  HEIGHT
+} from './base_ui';
+import { TradeWindow } from './trade_ui';
+//iPhone 6
 
-//iPhone X
-const WIDTH = 375
-const HEIGHT = 667
 
 function main(){
     let app = new PIXI.Application({
@@ -17,13 +25,27 @@ function main(){
 
     document.body.appendChild(app.view);
 
-    const tradeWindow = createTradeWindow(getNewTrade()); //TODO initial egg trade
-    app.stage.addChild(tradeWindow);
+    app.stage.addChild(BGElem(0, 0, WIDTH, HEIGHT, 0xDDDDDD));
 
-    app.ticker.add(delta => gameLoop(delta));
-    function gameLoop(delta){
+    const tradeWindow = new TradeWindow(getNewTrade());
+    app.stage.addChild(tradeWindow.container);
+
+    var dialogElement = createDialogElement("some message");
+    app.stage.addChild(dialogElement);
+    dialogElement.position.set(0, HEIGHT - 250);
+
+    var inventoryContainerElement = createInventoryContainerElement(getInventory());
+    app.stage.addChild(inventoryContainerElement);
+    inventoryContainerElement.position.set(0, HEIGHT - 150);
+
+    var tradeButtonContainerElement = createTradeButtonContainerElement();
+    app.stage.addChild(tradeButtonContainerElement);
+    tradeButtonContainerElement.position.set(0, HEIGHT - 50);
+
+    //app.ticker.add(delta => gameLoop(delta));
+    //function gameLoop(delta){
         // card.x += 1*delta;
-    }
+    //}
 
 }
 

@@ -12,4 +12,3 @@ module.exports = {
       contentBase: './dist'
     }
   };
-  
