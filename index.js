@@ -19,72 +19,9 @@ app.get('/', function(request, response) {
 	response.sendFile(__dirname + '/public/index.html');
 });
 
-// Probability Tools:
-
-// multiplies two gaussians {mean: #, sigma: #}
-function multBell(bell_a, bell_b) {
-	return {
-		mean: (bell_a.mean*bell_b.sigma*bell_b.sigma + bell_b.mean*bell_a.sigma*bell_a.sigma) /
-					(bell_a.sigma*bell_a.sigma + bell_b.sigma*bell_b.sigma),
-		sigma: (bell_a.sigma*bell_b.sigma) /
-					 Math.sqrt(bell_a.sigma*bell_a.sigma + bell_b.sigma*bell_b.sigma)
-	}
-}
-// generates random variable from gaussian
-function randBell(bell) {
-  let u = Math.random()*0.682;
-  return ((u % 1e-8 > 5e-9 ? 1 : -1) * (Math.sqrt(-Math.log(Math.max(1e-9, u)))-0.618))*1.618 * bell.sigma + bell.mean;
-}
-// returns gaussian probability density at x. normalized to integrate to 1 by default
-function sampleBell(bell,x,normalized=true){
-	var coeff = 1;
-	if(normalized){
-		coeff = 1/(bell.sigma*Math.sqrt(2*Math.PI));
-	}
-	let x_std = (x-bell.mean)/bell.sigma; // x transformed to standard gaussian
-	return coeff*Math.exp(-.5*x_std*x_std);
-}
-
-// normalize a list of numbers
-function norm(list) {
-	var sum = 0;
-	var norm_list = [];
-	for (i = 0; i < list.length; i++) {
-		sum += elem[i];
-		norm_list[i] = elem[i];
-	}
-	for (elem in norm_list) {
-		norm_list[i] /= sum;
-	}
-}
-// returns weighted discrete random variable
-function randIntWeighted(weights) {
-	var weights = norm(weights)
-	var uniform = Math.random();
-	for (i = 0; i < weights.length; i++) {
-		if (uniform < weights[i]) {
-			return i;
-		} else {
-			uniform -= weights[i];
-		}
-	}
-
-	return 0; //unreachable
-}
-
-function getRandomSubarray(arr, size) {
-    var shuffled = arr.slice(0), i = arr.length, temp, index;
-    while (i--) {
-        index = Math.floor((i + 1) * Math.random());
-        temp = shuffled[index];
-        shuffled[index] = shuffled[i];
-        shuffled[i] = temp;
-    }
-    return shuffled.slice(0, size);
-}
-
 function sumValue(buyer, deal) {
 	var totalValue = 0;
+	console.log("server sumValue: deal: " + deal);
 	deal.forEach(function (item) {
 		if (item.type in buyer.typePrefs) {
 			totalValue += buyer.typePrefs[item.type];
@@ -111,7 +48,9 @@ function generateTrade(buyer, inventory) {
 	var dealSizeFudge = 0;
 	for (var i = 0;; i++) {
 		//get a random subset of inventory items from user
-		var deal = getRandomSubarray(inventory, Util.randIntRange(1, inventory.length));
+		var deal = Util.getRandomSubarray(inventory, Util.randIntRange(1, inventory.length));
+		console.log("server generateTrade: deal:");
+		console.log(deal);
 		//calculate its value to this buyer
 		dealValue = sumValue(buyer, deal);
 		//if in the buyer's ideal fudge range, great!
@@ -126,7 +65,7 @@ function generateTrade(buyer, inventory) {
 
 	//TODO: built up based on value of deal and keyItemsToTrade
 	var stuffToSell = [];
-	for (var i = 0; i<dealValue; i+=10) {
+	for (var i = 0; i < dealValue; i += 10) {
  		stuffToSell.push(buyer.inventory[Util.randIntRange(0,buyer.inventory.length)]);
 	}
 
@@ -136,15 +75,31 @@ function generateTrade(buyer, inventory) {
 	}
 }
 
-app.get('/newTrade', function(request, response) {
-	var inventory = request.body.inventory;
-	var inventory = Data.items; //TODO: only for testing
-	var buyer = Data.generateRandomBuyer();
-	var trade = generateTrade(buyer, inventory);
-	response.send({
-		"buyer": buyer,
-		"trade": trade
-	});
+app.post('/newTrade', function(request, response) {
+	console.log("server newTrade called");
+	var inventory = JSON.parse(request.body.inventory);
+	console.log("server newTrade: inventory: " + inventory);
+	console.log("server newTrade: inventory size: " + inventory.length);
+	if (inventory.length == 0) {
+		console.log("server newTrade: empty inventory case");
+		console.log(Data.getItem("egg"));
+		console.log(Data.getBuyer("marty"));
+		response.send({
+			"buyer": Data.getBuyer("marty"),
+			"trade": {
+				"itemsSelling": [Data.getItem("egg")],
+				"itemsBuying": []
+			}
+		});
+	} else {
+		console.log("server newTrade: normal inventory case");
+		var buyer = Data.generateRandomBuyer();
+		var trade = generateTrade(buyer, inventory);
+		response.send({
+			"buyer": buyer,
+			"trade": trade
+		});
+	}
 });
 
 app.listen(process.env.PORT || 5000);

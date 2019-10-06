@@ -1,11 +1,25 @@
 const Util = require('./util.js');
 
 function getItem(id) {
-	items.forEach(function(element) {
-  		if (element.id == id) {
+	for (var i = 0; i < items.length; i++) {
+		var element = items[i];
+		if (element.id == id) {
+			console.log("server getItem: found item " + id);
 			return element;
 		}
-	});
+	}
+	console.log("server getItem: item not found: " + id);
+}
+
+exports.getBuyer = (id) => {
+	for (var i = 0; i < buyers.length; i++) {
+		var element = buyers[i];
+		if (element.id == id) {
+			console.log("server getBuyer: found buyer " + id);
+			return element;
+		}
+	}
+	console.log("server getBuyer: buyer not found: " + id);
 }
 
 exports.generateRandomBuyer = () => {
@@ -226,3 +240,4 @@ var buyers = [
 
 exports.items = items;
 exports.buyers = buyers;
+exports.getItem = getItem;
