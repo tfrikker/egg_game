@@ -1,4 +1,4 @@
-import { processTrade } from './gameState';
+import { processTrade, getTrade } from './gameState';
 import { getTexture } from './texture_bag';
 import { WIDTH, HEIGHT } from './index';
 import { InspectableImage, BGElem } from './base_ui';
@@ -30,7 +30,7 @@ export class TradeWindow extends PIXI.Container {
         console.log("Done constructing tradeWindow");
     }
 
-    update(tradeData){
+    update(){
         console.log("Updating tradeData");
         this.portrait.update(tradeData.buyer)
 
