@@ -32,4 +32,4 @@ const getNewTrade = () => {
 }
 
 
-export { processTrade, getNewTrade }
+export { processTrade, getNewTrade, getInventory }

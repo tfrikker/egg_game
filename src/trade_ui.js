@@ -1,4 +1,4 @@
-import { processTrade } from './gameState';
+import { processTrade, getInventory } from './gameState';
 import { getTexture } from './texture_bag';
 import { WIDTH, HEIGHT } from './index';
 
@@ -25,11 +25,7 @@ const MESSAGE_STYLE = new PIXI.TextStyle({
 const createTradeWindow = (trade) => {
     const container = new PIXI.Container();
 
-    const background = new PIXI.Graphics();
-    background.beginFill(0XDDDDDD);
-    background.drawRect(0, 0, WIDTH, HEIGHT);
-    background.endFill();
-    container.addChild(background);
+    container.addChild(BGElem(0, 0, WIDTH, HEIGHT, 0xDDDDDD));
 
     //const portraitHeight = 140;
     //const characterSprite = createSprite('./img/test_image.png')
@@ -56,9 +52,13 @@ const createTradeWindow = (trade) => {
     //message.position = {x: 100, y: 10};
     //container.addChild(message)
 
-    var buyingContainerElement = createBuyingContainerElement();
-    container.addChild(buyingContainerElement);
-    buyingContainerElement.position.set(0, HEIGHT - 150);
+    var dialogElement = createDialogElement("some message");
+    container.addChild(dialogElement);
+    dialogElement.position.set(0, HEIGHT - 250);
+
+    var inventoryContainerElement = createInventoryContainerElement(getInventory());
+    container.addChild(inventoryContainerElement);
+    inventoryContainerElement.position.set(0, HEIGHT - 150);
 
     var tradeButtonContainerElement = createTradeButtonContainerElement();
     container.addChild(tradeButtonContainerElement);
@@ -67,31 +67,53 @@ const createTradeWindow = (trade) => {
     return container;
 }
 
-function createBuyingContainerElement() {
-    console.log("createBuyingContainerElement");
-    const LEFT_OFFSET = 10;
+function createDialogElement(message) {
+    console.log("createDialogElement");
+    const TABLE_HEIGHT = 50;
     const container = new PIXI.Container();
 
-    const text = new PIXI.Text("What they want", MESSAGE_STYLE);
-    container.addChild(text);
-    text.position.set(LEFT_OFFSET, 0);
+    container.addChild(BGRoundedElem(10, 0, WIDTH - 20, TABLE_HEIGHT, 0xAAAAAA));
 
-    const buyingTableElement = createBuyingTableElement();
-    container.addChild(buyingTableElement);
-    buyingTableElement.position.set(LEFT_OFFSET, 20); //space for text
+    const text = new PIXI.Text(message, MESSAGE_STYLE);
+    container.addChild(text);
+    text.position.set(10, TABLE_HEIGHT / 2);
 
     return container;
 }
 
-function createBuyingTableElement() {
-    console.log("createBuyingTableElement");
+function createInventoryContainerElement(inventory) {
+    console.log("createInventoryContainerElement");
+    const LEFT_OFFSET = 10;
     const container = new PIXI.Container();
 
-    const background = new PIXI.Graphics();
-    background.beginFill(0xAAAAAA);
-    background.drawRoundedRect(0, 0, WIDTH - 20, 50); //TODO height
-    background.endFill();
-    container.addChild(background);
+    const text = new PIXI.Text("Your inventory", MESSAGE_STYLE);
+    container.addChild(text);
+    text.position.set(LEFT_OFFSET, 0);
+
+    const inventoryTableElement = createInventoryTableElement(inventory);
+    container.addChild(inventoryTableElement);
+    inventoryTableElement.position.set(LEFT_OFFSET, 20); //space for text
+
+    return container;
+}
+
+function createInventoryTableElement(inventory) {
+    console.log("createInventoryTableElement");
+    const TABLE_HEIGHT = 50;
+    const container = new PIXI.Container();
+
+    container.addChild(BGRoundedElem(0, 0, WIDTH - 20, TABLE_HEIGHT, 0xAAAAAA));
+
+    const IMAGE_SIZE = 32;
+    const VERT_SPACING = (TABLE_HEIGHT - IMAGE_SIZE) / 2;
+    const HORIZ_SPACING = 5;
+    var curX = HORIZ_SPACING;
+    inventory.forEach(function(element) {
+        var sprite = createSprite(element.image);
+        container.addChild(sprite);
+        sprite.position.set(curX, VERT_SPACING);
+        curX += IMAGE_SIZE + HORIZ_SPACING;
+    });
 
     return container;
 }
@@ -118,11 +140,7 @@ function createTradeYesButtonElement() {
     //const but = new PIXI.Text(text, MESSAGE_STYLE);
     const button = new PIXI.Container();
 
-    const background = new PIXI.Graphics();
-    background.beginFill(0x00FF00);
-    background.drawRect(0, 0, buttonWidth, buttonHeight); //TODO height
-    background.endFill();
-    button.addChild(background);
+    button.addChild(BGElem(0, 0, buttonWidth, buttonHeight, 0x00FF00));
 
     const text = new PIXI.Text("Let's do it!", MESSAGE_STYLE);
     button.addChild(text);
@@ -146,11 +164,7 @@ function createTradeNoButtonElement() {
     //const but = new PIXI.Text(text, MESSAGE_STYLE);
     const button = new PIXI.Container();
 
-    const background = new PIXI.Graphics();
-    background.beginFill(0xFF0000);
-    background.drawRect(0, 0, buttonWidth, buttonHeight); //TODO height
-    background.endFill();
-    button.addChild(background);
+    button.addChild(BGElem(0, 0, buttonWidth, buttonHeight, 0xFF0000));
 
     const text = new PIXI.Text("Nah...", MESSAGE_STYLE);
     button.addChild(text);
@@ -163,6 +177,24 @@ function createTradeNoButtonElement() {
     });
 
     return button;
+}
+
+function BGRoundedElem(x, y, w, h, fill) {
+    const background = new PIXI.Graphics();
+    background.beginFill(fill);
+    background.drawRoundedRect(x, y, w, h);
+    background.endFill();
+
+    return background;
+}
+
+function BGElem(x, y, w, h, fill) {
+    const background = new PIXI.Graphics();
+    background.beginFill(fill);
+    background.drawRect(x, y, w, h);
+    background.endFill();
+
+    return background;
 }
 
 export { createTradeWindow }
