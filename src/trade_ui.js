@@ -11,20 +11,20 @@ export class TradeWindow extends PIXI.Container {
         console.log("Constructing tradeWindow...");
         super();
         console.log("Called super");
-        const WIDTH = 500
-        const HEIGHT = 400
         const portraitHeight = 128;
 
 
-        this.background = BGElem(0, 0, WIDTH, HEIGHT, 0xFFFFFF);
+        this.background = BGElem(0, 0, WIDTH, 400, 0xFFFFFF);
         this.addChild(this.background);
 
-        this.portrait = new InspectableImage({image: './img/test_image.png', text:'flavor!'})
-        this.portrait.width = this.portrait.width/this.portrait.height*portraitHeight
-        this.portrait.height = portraitHeight
-        this.addChild(this.portrait.sprite);
+        this.portrait = new InspectableImage({image: './images/items/egg.png', text:'flavor!'}, 10, 10)
+        // this.portrait.width = 100 //= this.portrait.width/this.portrait.height*portraitHeight
+        // this.portrait.height = 100 //portraitHeight
+        window.port = this.portrait;
+        this.addChild(this.portrait);
 
         this.offerings = new PIXI.Container();
+        this.offerings.position.set(WIDTH/2, 20)
 
         this.addChild(this.offerings)
         console.log("Done constructing tradeWindow");
@@ -32,10 +32,14 @@ export class TradeWindow extends PIXI.Container {
 
     update(tradeData){
         console.log("Updating tradeData");
+        this.portrait.update(tradeData.buyer)
+
+        this.portrait.width = 128 // NOTE: this shouldn't be necessary, final images can be saved at the correct size
+        this.portrait.height = 128
 
         tradeData.trade.itemsSelling.forEach((itemData, i) => {
             const newItem = new InspectableImage(itemData);
-            newItem.sprite.position.set(30 + i * 80, 0);
+            newItem.position.set(30 + i * 80, 0);
             this.offerings.addChild(newItem);
         });
         //TODO: go through and update all the things

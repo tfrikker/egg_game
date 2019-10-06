@@ -6,39 +6,41 @@ import { getTexture } from './texture_bag';
 export const WIDTH = 375
 export const HEIGHT = 667
 
-export class InspectableImage extends PIXI.Container{
-    constructor(data){
-        super();
-        this.sprite = new PIXI.Sprite(getTexture(data.image))
+export class InspectableImage extends PIXI.Sprite{
+    constructor(data, x=0, y=0){
+        super(getTexture(data.image));
+        this.position.set(x,y)
         this.flavorText = data.text
-        this.sprite.interactive = true;
-        this.sprite.on('pointerdown', () => {
+        this.interactive = true;
+        this.on('pointerdown', () => {
             console.log(this.flavorText)
             //TODO: create this function
-            // window.setMessage(this.flavorText)
+            window.setMainDialoge(this.flavorText)
         });
-        this.addChild(this.sprite);
+        this.addChild(this);
     }
     update(data){
-        this.sprite.texture = getTexture(data.image)
+        this.texture = getTexture(data.image)
         this.flavorText = data.text
     }
 }
 
-
-export function createDialogElement(message) {
+export class DialogeElement extends PIXI.Container{
+  constructor(message){
+    super()
     console.log("createDialogElement");
     const TABLE_HEIGHT = 50;
-    const container = new PIXI.Container();
-
-    container.addChild(BGRoundedElem(10, 0, WIDTH - 20, TABLE_HEIGHT, 0xAAAAAA));
-
-    const text = new PIXI.Text(message, MESSAGE_STYLE);
-    container.addChild(text);
-    text.position.set(10, TABLE_HEIGHT / 2);
-
-    return container;
+    this.addChild(BGRoundedElem(10, 0, WIDTH - 20, TABLE_HEIGHT, 0xAAAAAA));
+    this.text = new PIXI.Text(message, MESSAGE_STYLE);
+    this.addChild(this.text);
+    this.text.position.set(10, TABLE_HEIGHT / 2);
+    window.tex = this.text
+  }
+  setDialogue(message){
+    this.text.text = message;
+  }
 }
+
 
 export function createInventoryContainerElement(inventory) {
     console.log("createInventoryContainerElement");

@@ -147,7 +147,7 @@ var buyers = [
 	{
 		id: "marty",
 		name: "Marty the Cockroach",
-		image: "/images/buyers/marty.tif",
+		image: "/images/buyers/marty.jpg",
 		typePrefs: {
 			"mystery": 20,
 			"food": 5
@@ -155,7 +155,8 @@ var buyers = [
 		inventory: items.concat([getItem("shiv")]), //TODO handle egg and key
 		itemPrefs: {},
 		dealSize: 20,
-		saviness: 1
+		saviness: 1,
+		text: "hey you wanna trade??"
 	},
 	{
 		id: "winifred",

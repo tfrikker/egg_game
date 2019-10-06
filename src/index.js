@@ -2,7 +2,7 @@ import { createTradeWindow } from './trade_ui';
 import { getNewTrade, getInventory } from './gameState';
 import {
   BGRoundedElem,
-  createDialogElement,
+  DialogeElement,
   createInventoryContainerElement,
   createTradeButtonContainerElement,
   BGElem,
@@ -35,7 +35,10 @@ function main(){
     getNewTrade();
     console.log("Gotten first trade");
 
-    var dialogElement = createDialogElement("some message");
+    const dialogElement = new DialogeElement("some message");
+    window.setMainDialoge = (message) => {
+      dialogElement.setDialogue(message);
+    }
     app.stage.addChild(dialogElement);
     dialogElement.position.set(0, HEIGHT - 250);
     console.log("Added dialog element");
