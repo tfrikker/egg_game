@@ -1,8 +1,9 @@
 import { createTradeWindow } from './trade_ui';
 import { getNewTrade } from './gameState';
 
-const WIDTH = 400
-const HEIGHT = 700
+//iPhone X
+const WIDTH = 375
+const HEIGHT = 667
 
 function main(){
     let app = new PIXI.Application({
@@ -15,12 +16,6 @@ function main(){
     )
 
     document.body.appendChild(app.view);
-
-    //render the moving frame
-    var center_x = WIDTH/2;
-    var center_y = HEIGHT/2;
-    var frame_w = 100;
-    var frame_h = 150;
 
     const tradeWindow = createTradeWindow(getNewTrade()); //TODO initial egg trade
     app.stage.addChild(tradeWindow);
@@ -35,3 +30,5 @@ function main(){
 document.addEventListener("DOMContentLoaded", function(event) {
     main();
 });
+
+export { WIDTH, HEIGHT }
