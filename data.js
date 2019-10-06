@@ -137,7 +137,7 @@ var items = [
 		id: "extravagantHat",
 		name: "Extravagant Hat",
 		tags: ["flair"],
-		image: "/images/items/extravagantHat.png",
+		image: "/images/items/extravagant_hat.png",
 		text: "A fez that, when rotated, reminds you of something."
 	}
 ]

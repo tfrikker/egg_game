@@ -2,6 +2,7 @@ import {
   MESSAGE_STYLE
 } from './styles';
 import { getTexture } from './texture_bag';
+import { processTrade, getNewTrade } from './gameState';
 
 export const WIDTH = 375
 export const HEIGHT = 667
@@ -112,8 +113,7 @@ function createTradeYesButtonElement() {
     button.interactive = true;
     button.on('pointerdown', () => {
         console.log("acceptButtonClicked: Trade accepted")
-        processTrade(trade);
-        container.parent.removeChild(container);
+        processTrade();
         getNewTrade();
     });
 
