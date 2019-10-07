@@ -65,7 +65,7 @@ export function createInventoryContainerElement() {
 
     inventoryTable = createInventoryTableElement();
     container.addChild(inventoryTable);
-    inventoryTable.position.set(LEFT_OFFSET, 20); //space for text
+    inventoryTable.position.set(LEFT_OFFSET, 30); //space for text
 
     return container;
 }
