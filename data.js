@@ -152,7 +152,7 @@ var buyers = [
 		itemPrefs: {},
 		dealSize: 20,
 		saviness: 1,
-		text: "hey you wanna trade??"
+		text: "Aw, you poor kid – y'ain't got nothin? Here, have an egg. You'll need it in this economy."
 	},
 	{
 		id: "winifred",
@@ -165,7 +165,8 @@ var buyers = [
 		inventory: items.concat([getItem("magicMushroom"), getItem("sodaCan"), getItem("bagODrugs")]),
 		itemPrefs: {},
 		dealSize: 20,
-		saviness: 1
+		saviness: 1,
+		text: "Do you want any of this? I'm trying this new cleanse." 
 	},
 	{
 		id: "moe",
@@ -179,7 +180,8 @@ var buyers = [
 		inventory: items.concat([getItem("moldyOrange"), getItem("extravagantHat")]),
 		itemPrefs: {},
 		dealSize: 20,
-		saviness: 1
+		saviness: 1,
+		text: "Love Actuality Multiplicity Peace." 
 	},
 	{
 		id: "goldie",
@@ -192,7 +194,8 @@ var buyers = [
 		inventory: items.concat([getItem("juiceBox"), getItem("fishHook"), getItem("goldfishCrackers"), getItem("goldfishCrackers")]),
 		itemPrefs: {},
 		dealSize: 20,
-		saviness: 1
+		saviness: 1,
+		text: "I'm not supposed to be down here. I was just taking a nap!" 
 	},
 	{
 		id: "whiskers",
@@ -205,7 +208,8 @@ var buyers = [
 		inventory: items.concat([getItem("deadGoldfish"), getItem("wombatPoop")]),
 		itemPrefs: {},
 		dealSize: 20,
-		saviness: 1
+		saviness: 1,
+		text: "Why, hello there, old chap! Got any mixers for my tipple?" 
 	},
 	{
 		id: "ratKing",
@@ -218,7 +222,8 @@ var buyers = [
 		inventory: items.concat([getItem("mysteriousBriefcase"), getItem("dessicatedLizard")]),
 		itemPrefs: {},
 		dealSize: 20,
-		saviness: 1
+		saviness: 1,
+		text: "Sure would be nice to get a little alone time around here." 
 	},
 	{
 		id: "bordeaux",
@@ -231,7 +236,8 @@ var buyers = [
 		inventory: items.concat([getItem("spyDossier"), getItem("floodlight")]),
 		itemPrefs: {},
 		dealSize: 20,
-		saviness: 1
+		saviness: 1,
+		text: "Don't let the chompers fool ya. I'm just a humble collector of old sewer curios." 
 	}
 ];
 
