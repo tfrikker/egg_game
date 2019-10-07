@@ -5,6 +5,10 @@ var inventory = [];
 var trade;
 var numTrades = 0;
 
+const getNumTrades = () => {
+    return numTrades;
+}
+
 const getInventory = () => {
     return inventory;
 }
@@ -42,4 +46,4 @@ const getNewTrade = () => {
 }
 
 
-export { processTrade, getNewTrade, getInventory, getTrade }
+export { processTrade, getNewTrade, getInventory, getTrade, getNumTrades }

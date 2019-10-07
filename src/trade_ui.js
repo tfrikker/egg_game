@@ -1,4 +1,4 @@
-import { processTrade, getTrade } from './gameState';
+import { processTrade, getTrade, getNumTrades, getInventory } from './gameState';
 import { getTexture } from './texture_bag';
 import { WIDTH, HEIGHT } from './index';
 import { InspectableImage, BGRoundedElem } from './base_ui';
@@ -76,6 +76,10 @@ export class TradeWindow extends PIXI.Container {
         text.anchor.set(0.5);
         text.position.set(WIDTH/2, 20);
 
-        window.setMainDialoge(trade.buyer.name + ': ' + trade.buyer.text)
+        if (getInventory().length > 7) {
+            window.setMainDialoge(trade.buyer.name + ': ' + trade.buyer.text + " You made " + getNumTrades() + " trades.")
+        } else {
+            window.setMainDialoge(trade.buyer.name + ': ' + trade.buyer.text)
+        }
     }
 }
