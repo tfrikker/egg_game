@@ -51,11 +51,6 @@ function main(){
     app.stage.addChild(tradeButtonContainerElement);
     tradeButtonContainerElement.position.set(0, HEIGHT - 50);
 
-    //app.ticker.add(delta => gameLoop(delta));
-    //function gameLoop(delta){
-        // card.x += 1*delta;
-    //}
-
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {

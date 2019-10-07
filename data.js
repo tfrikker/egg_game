@@ -162,11 +162,11 @@ var buyers = [
 		image: "/images/buyers/winifred.png",
 		typePrefs: {
 			"food": 20,
-			"light": 5
+			"light": 5,
 		},
 		inventory: items.concat([getItem("magicMushroom"), getItem("sodaCan"), getItem("bagODrugs")]),
 		itemPrefs: {},
-		dealSize: 25,
+		dealSize: 20,
 		saviness: 1,
 		text: "\"Do you want any of this? I'm trying this new cleanse.\""
 	},
@@ -242,7 +242,7 @@ var buyers = [
 		},
 		inventory: items.concat([getItem("spyDossier"), getItem("floodlight")]),
 		itemPrefs: {},
-		dealSize: 25,
+		dealSize: 20,
 		saviness: 1,
 		text: "\"Don't let the chompers fool ya. I'm just a humble collector of old sewer curios.\""
 	}

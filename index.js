@@ -22,9 +22,14 @@ app.get('/', function(request, response) {
 function sumValue(buyer, deal) {
 	var totalValue = 0;
 	deal.forEach(function (item) {
-		if (item.type in buyer.typePrefs) {
-			totalValue += buyer.typePrefs[item.type];
-		} else {
+		var found = false;
+		item.tags.forEach(function (type) {
+			if (type in buyer.typePrefs && !found) {
+				totalValue += buyer.typePrefs[type];
+				found = true;
+			}
+		});
+		if (!found) {
 			totalValue += 10;
 		}
 	});
@@ -47,7 +52,7 @@ function generateTrade(buyer, inventory) {
 	var dealSizeFudge = 0;
 	for (var i = 0;; i++) {
 		//get a random subset of inventory items from user
-		var deal = Util.getRandomSubarray(inventory, Util.randIntRange(1, inventory.length));
+		var deal = Util.getRandomSubarray(inventory, 3);
 		//calculate its value to this buyer
 		dealValue = sumValue(buyer, deal);
 		//if in the buyer's ideal fudge range, great!
@@ -62,7 +67,10 @@ function generateTrade(buyer, inventory) {
 
 	//TODO: built up based on value of deal and keyItemsToTrade
 	var stuffToSell = [];
-	for (var i = 0; i < dealValue; i += 10) {
+	while (true) {
+		if (sumValue(buyer, stuffToSell) >= dealValue || stuffToSell.length > 3) {
+			break;
+		}
 		//don't allow duplicates
 		var item = buyer.inventory[Util.randIntRange(0, buyer.inventory.length)];
 		var fine = false;
@@ -89,8 +97,10 @@ function generateTrade(buyer, inventory) {
 app.post('/newTrade', function(request, response) {
 	var inventory = JSON.parse(request.body.inventory);
 	if (inventory.length == 0) {
+		var buyer = JSON.parse(JSON.stringify(Data.getBuyer("marty")));
+		buyer.text = "\"Aw, you poor kid – y'ain't got nothin? Here, have an egg. You'll need it in this economy.\"";
 		response.send({
-			"buyer": Data.getBuyer("marty"),
+			"buyer": buyer,
 			"trade": {
 				"itemsSelling": [Data.getItem("egg")],
 				"itemsBuying": []
@@ -104,10 +114,12 @@ app.post('/newTrade', function(request, response) {
 			"trade": trade
 		});
 	} else { //TODO
+		var buyer = JSON.parse(JSON.stringify(Data.getBuyer("marty")));
+		buyer.text = "Well I'll be - you really traded up! I'll get ya outta here for all your stuff.";
 		response.send({
-			"buyer": Data.getBuyer("marty"),
+			"buyer": buyer,
 			"trade": {
-				"itemsSelling": [Data.getItem("egg")],
+				"itemsSelling": [],
 				"itemsBuying": []
 			}
 		});

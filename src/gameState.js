@@ -33,12 +33,11 @@ const processTrade = () => {
 
 const getNewTrade = () => {
     $.post( location.protocol + "/newTrade", { inventory: JSON.stringify(inventory) }, function(data) {
-        setButtonsEnabled();
+        if (inventory.length < 8) {
+            setButtonsEnabled();
+        }
         trade = data;
         tradeWindow.update();
-        if (numTrades == 0) {
-            window.setMainDialoge("\"Aw, you poor kid – y'ain't got nothin? Here, have an egg. You'll need it in this economy.\"");
-        }
     });
 }
 
