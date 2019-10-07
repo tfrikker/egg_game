@@ -1,5 +1,5 @@
 import { tradeWindow } from './index';
-import { updateInventoryTable } from './base_ui';
+import { updateInventoryTable, setButtonsEnabled } from './base_ui';
 
 var inventory = [];
 var trade;
@@ -33,6 +33,7 @@ const processTrade = () => {
 
 const getNewTrade = () => {
     $.post( location.protocol + "/newTrade", { inventory: JSON.stringify(inventory) }, function(data) {
+        setButtonsEnabled();
         trade = data;
         tradeWindow.update();
         if (numTrades == 0) {

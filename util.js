@@ -57,9 +57,6 @@ exports.randIntWeighted = (weights) => {
 }
 
 exports.getRandomSubarray = (arr, size) => {
-	console.log("server getRandomSubarray: (arr, size) = ");
-	console.log(arr);
-	console.log(size);
     var shuffled = arr.slice(0), i = arr.length, temp, index;
     while (i--) {
         index = Math.floor((i + 1) * Math.random());

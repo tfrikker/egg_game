@@ -9,6 +9,11 @@ export const WIDTH = 375
 export const HEIGHT = 667
 
 var inventoryTable = new PIXI.Container();
+var buttonsEnabled = true;
+
+export function setButtonsEnabled() {
+    buttonsEnabled = true;
+}
 
 export function getInventoryTable() {
     return inventoryTable;
@@ -35,7 +40,7 @@ export class DialogeElement extends PIXI.Container{
   constructor(message, style=MESSAGE_STYLE){
     super()
     const TABLE_HEIGHT = 50;
-    
+
     // this.addChild(BGElem(0, 0, WIDTH, 100, 0xDDDDDD));
     this.addChild(BGRoundedElem(10, -5, WIDTH - 20, 80, 0xEEEEEE));
     this.text = new PIXI.Text(message, style);
@@ -129,8 +134,11 @@ function createTradeYesButtonElement() {
 
     button.interactive = true;
     button.on('pointerdown', () => {
-        processTrade();
-        getNewTrade();
+        if (buttonsEnabled) {
+            buttonsEnabled = false;
+            processTrade();
+            getNewTrade();
+        }
     });
 
     return button;
@@ -151,7 +159,10 @@ function createTradeNoButtonElement() {
 
     button.interactive = true;
     button.on('pointerdown', () => {
-        getNewTrade();
+        if (buttonsEnabled) {
+            buttonsEnabled = false;
+            getNewTrade();
+        }
     });
 
     return button;
