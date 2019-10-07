@@ -22,10 +22,15 @@ function showStartScreen(appStage) {
     //const but = new PIXI.Text(text, MESSAGE_STYLE);
     const button = new PIXI.Container();
 
-    const gameTitle = new PIXI.Text("EGG GAME", MESSAGE_STYLE_TITLE);
+    const gameTitle = new PIXI.Text("The Drainpipe Market", MESSAGE_STYLE_TITLE);
     appStage.addChild(gameTitle);
     gameTitle.anchor.set(0.5);
-    gameTitle.position.set(WIDTH/2, 50);
+    gameTitle.position.set(WIDTH/2, 30);
+
+    const gameTitle2 = new PIXI.Text("(EGGS NIHILO)", MESSAGE_STYLE_LARGE);
+    appStage.addChild(gameTitle2);
+    gameTitle2.anchor.set(0.5);
+    gameTitle2.position.set(WIDTH/2, 65);
 
     const gameDesc = new PIXI.Text("You're trapped in the sewer and need to trade your way out. Are you up to the challenge?", MESSAGE_STYLE_LARGE_WRAP);
     appStage.addChild(gameDesc);
@@ -58,6 +63,7 @@ function showStartScreen(appStage) {
         button.parent.removeChild(button);
         credits.parent.removeChild(credits);
         gameTitle.parent.removeChild(gameTitle);
+        gameTitle2.parent.removeChild(gameTitle2);
         gameDesc.parent.removeChild(gameDesc);
         showGame(appStage)
     });
