@@ -3,6 +3,7 @@ import { updateInventoryTable } from './base_ui';
 
 var inventory = [];
 var trade;
+var numTrades = 0;
 
 const getInventory = () => {
     return inventory;
@@ -26,7 +27,7 @@ const processTrade = () => {
     trade.trade.itemsSelling.forEach(function(item) {
         inventory.push(item);
     });
-
+    numTrades++;
     updateInventoryTable();
 }
 
@@ -34,6 +35,9 @@ const getNewTrade = () => {
     $.post( location.protocol + "/newTrade", { inventory: JSON.stringify(inventory) }, function(data) {
         trade = data;
         tradeWindow.update();
+        if (numTrades == 0) {
+            window.setMainDialoge("\"Aw, you poor kid – y'ain't got nothin? Here, have an egg. You'll need it in this economy.\"");
+        }
     });
 }
 

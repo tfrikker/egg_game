@@ -10,6 +10,7 @@ import {
   HEIGHT
 } from './base_ui';
 import { TradeWindow } from './trade_ui';
+import { FLAVOR_STYLE } from './styles';
 //iPhone 6
 
 var tradeWindow;
@@ -33,10 +34,12 @@ function main(){
     tradeWindow.position.set(0, 0);
     getNewTrade();
 
-    const dialogElement = new DialogeElement("Click on images for descriptions!");
+    const dialogElement = new DialogeElement("Click on images for descriptions!", FLAVOR_STYLE);
     window.setMainDialoge = (message) => {
       dialogElement.setDialogue(message);
     }
+    dialogElement.text.anchor.set(.5,0)
+    dialogElement.text.setTransform(WIDTH/2,0)
     app.stage.addChild(dialogElement);
     dialogElement.position.set(0, HEIGHT - 250);
 
