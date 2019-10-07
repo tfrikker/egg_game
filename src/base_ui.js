@@ -7,7 +7,7 @@ import { processTrade, getNewTrade, getInventory } from './gameState';
 export const WIDTH = 375
 export const HEIGHT = 667
 
-var inventoryTable;
+var inventoryTable = new PIXI.Container();
 
 export function getInventoryTable() {
     return inventoryTable;
@@ -67,6 +67,16 @@ export function createInventoryTableElement() {
 
     container.addChild(BGRoundedElem(0, 0, WIDTH - 20, TABLE_HEIGHT, 0xAAAAAA));
 
+    updateInventoryTable();
+
+    return container;
+}
+
+export function updateInventoryTable() {
+    if (inventoryTable.children.length > 1) {
+        inventoryTable.removeChildren(1); //remove all the images
+    }
+    const TABLE_HEIGHT = 50;
     const IMAGE_SIZE = 32;
     const VERT_SPACING = (TABLE_HEIGHT - IMAGE_SIZE) / 2;
     const HORIZ_SPACING = 5;
@@ -77,12 +87,10 @@ export function createInventoryTableElement() {
             messageText: element.text
         }
         var sprite = new InspectableImage(data);
-        container.addChild(sprite);
+        inventoryTable.addChild(sprite);
         sprite.position.set(curX, VERT_SPACING);
         curX += IMAGE_SIZE + HORIZ_SPACING;
     });
-
-    return container;
 }
 
 export function createTradeButtonContainerElement() {

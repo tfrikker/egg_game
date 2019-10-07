@@ -13,7 +13,6 @@ import { TradeWindow } from './trade_ui';
 //iPhone 6
 
 var tradeWindow;
-var inventoryTableContainer;
 
 function main(){
     let app = new PIXI.Application({
@@ -40,7 +39,7 @@ function main(){
     app.stage.addChild(dialogElement);
     dialogElement.position.set(0, HEIGHT - 250);
 
-    inventoryTableContainer = createInventoryContainerElement();
+    var inventoryTableContainer = createInventoryContainerElement();
     app.stage.addChild(inventoryTableContainer);
     inventoryTableContainer.position.set(0, HEIGHT - 150);
 
@@ -59,4 +58,4 @@ document.addEventListener("DOMContentLoaded", function(event) {
     main();
 });
 
-export { WIDTH, HEIGHT, tradeWindow, inventoryTableContainer }
+export { WIDTH, HEIGHT, tradeWindow }
