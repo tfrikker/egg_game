@@ -65,6 +65,6 @@ export const FLAVOR_STYLE = new PIXI.TextStyle({
     // stroke: '#ff3300',
     // strokeThickness: 4
     wordWrap: true,
-    wordWrapWidth: 270,
+    wordWrapWidth: 340,
     align: 'center',
 });
