@@ -17,6 +17,15 @@ export class TradeWindow extends PIXI.Container {
         this.portrait = new InspectableImage({image: './images/items/egg.png', text:'flavor!'})
         // this.portrait.width = 100 //= this.portrait.width/this.portrait.height*portraitHeight
         // this.portrait.height = 100 //portraitHeight
+
+        var wannaSell = new PIXI.Text("what they wanna sell", MESSAGE_STYLE);
+        this.addChild(wannaSell);
+        wannaSell.position.set(30, 190);
+
+        var wannaBuy = new PIXI.Text("what they wanna buy", MESSAGE_STYLE);
+        this.addChild(wannaBuy);
+        wannaBuy.position.set(30, 290);
+
         window.port = this.portrait;
         this.addChild(this.portrait);
         this.portrait.position.set(WIDTH/2 - (this.portrait.width / 2), 20);
