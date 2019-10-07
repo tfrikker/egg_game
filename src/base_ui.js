@@ -2,10 +2,16 @@ import {
   MESSAGE_STYLE
 } from './styles';
 import { getTexture } from './texture_bag';
-import { processTrade, getNewTrade } from './gameState';
+import { processTrade, getNewTrade, getInventory } from './gameState';
 
 export const WIDTH = 375
 export const HEIGHT = 667
+
+var inventoryTable;
+
+export function getInventoryTable() {
+    return inventoryTable;
+}
 
 export class InspectableImage extends PIXI.Sprite{
     constructor(data, x=0, y=0){
@@ -14,11 +20,9 @@ export class InspectableImage extends PIXI.Sprite{
         this.flavorText = data.text
         this.interactive = true;
         this.on('pointerdown', () => {
-            console.log(this.flavorText)
             //TODO: create this function
             window.setMainDialoge(this.flavorText)
         });
-        this.addChild(this);
     }
     update(data){
         this.texture = getTexture(data.image)
@@ -29,7 +33,6 @@ export class InspectableImage extends PIXI.Sprite{
 export class DialogeElement extends PIXI.Container{
   constructor(message){
     super()
-    console.log("createDialogElement");
     const TABLE_HEIGHT = 50;
     this.addChild(BGRoundedElem(10, 0, WIDTH - 20, TABLE_HEIGHT, 0xAAAAAA));
     this.text = new PIXI.Text(message, MESSAGE_STYLE);
@@ -43,8 +46,7 @@ export class DialogeElement extends PIXI.Container{
 }
 
 
-export function createInventoryContainerElement(inventory) {
-    console.log("createInventoryContainerElement");
+export function createInventoryContainerElement() {
     const LEFT_OFFSET = 10;
     const container = new PIXI.Container();
 
@@ -52,15 +54,14 @@ export function createInventoryContainerElement(inventory) {
     container.addChild(text);
     text.position.set(LEFT_OFFSET, 0);
 
-    const inventoryTableElement = createInventoryTableElement(inventory);
-    container.addChild(inventoryTableElement);
-    inventoryTableElement.position.set(LEFT_OFFSET, 20); //space for text
+    inventoryTable = createInventoryTableElement();
+    container.addChild(inventoryTable);
+    inventoryTable.position.set(LEFT_OFFSET, 20); //space for text
 
     return container;
 }
 
-export function createInventoryTableElement(inventory) {
-    console.log("createInventoryTableElement");
+export function createInventoryTableElement() {
     const TABLE_HEIGHT = 50;
     const container = new PIXI.Container();
 
@@ -70,12 +71,12 @@ export function createInventoryTableElement(inventory) {
     const VERT_SPACING = (TABLE_HEIGHT - IMAGE_SIZE) / 2;
     const HORIZ_SPACING = 5;
     var curX = HORIZ_SPACING;
-    inventory.forEach(function(element) {
+    getInventory().forEach(function(element) {
         var data = {
             image: element.image,
             messageText: element.text
         }
-        var sprite = InspectableImage(data);
+        var sprite = new InspectableImage(data);
         container.addChild(sprite);
         sprite.position.set(curX, VERT_SPACING);
         curX += IMAGE_SIZE + HORIZ_SPACING;
@@ -85,7 +86,6 @@ export function createInventoryTableElement(inventory) {
 }
 
 export function createTradeButtonContainerElement() {
-    console.log("createTradeButtonContainerElement");
     const container = new PIXI.Container();
 
     const noButton = createTradeNoButtonElement();
@@ -100,7 +100,6 @@ export function createTradeButtonContainerElement() {
 }
 
 function createTradeYesButtonElement() {
-    console.log("createTradeYesButtonElement");
     const buttonWidth = WIDTH / 2;
     const buttonHeight = 50;
     //const but = new PIXI.Text(text, MESSAGE_STYLE);
@@ -114,7 +113,6 @@ function createTradeYesButtonElement() {
 
     button.interactive = true;
     button.on('pointerdown', () => {
-        console.log("acceptButtonClicked: Trade accepted")
         processTrade();
         getNewTrade();
     });
@@ -123,7 +121,6 @@ function createTradeYesButtonElement() {
 }
 
 function createTradeNoButtonElement() {
-    console.log("createTradeNoButtonElement");
     const buttonWidth = WIDTH / 2;
     const buttonHeight = 50;
     //const but = new PIXI.Text(text, MESSAGE_STYLE);
@@ -137,7 +134,6 @@ function createTradeNoButtonElement() {
 
     button.interactive = true;
     button.on('pointerdown', () => {
-        console.log("rejectButtonClicked: Trade rejected");
         getNewTrade();
     });
 

@@ -4,22 +4,18 @@ function getItem(id) {
 	for (var i = 0; i < items.length; i++) {
 		var element = items[i];
 		if (element.id == id) {
-			console.log("server getItem: found item " + id);
 			return element;
 		}
 	}
-	console.log("server getItem: item not found: " + id);
 }
 
 exports.getBuyer = (id) => {
 	for (var i = 0; i < buyers.length; i++) {
 		var element = buyers[i];
 		if (element.id == id) {
-			console.log("server getBuyer: found buyer " + id);
 			return element;
 		}
 	}
-	console.log("server getBuyer: buyer not found: " + id);
 }
 
 exports.generateRandomBuyer = () => {

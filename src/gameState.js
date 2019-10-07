@@ -1,4 +1,5 @@
-import { tradeWindow } from './index';
+import { tradeWindow, inventoryTableContainer } from './index';
+import { getInventoryTable, createInventoryTableElement } from './base_ui';
 
 var inventory = [];
 var trade;
@@ -8,31 +9,30 @@ const getInventory = () => {
 }
 
 const getTrade = () => {
-    console.log("TRADE: " + trade);
     return trade;
 }
 
 const processTrade = () => {
-    console.log("processTrade: Processing trade");
     //remove all items being bought by buyer
     trade.trade.itemsBuying.forEach(function(item) {
-        var index = inventory.indexOf(item);
-        if (index !== -1) array.splice(index, 1);
+        for (var i = 0; i < inventory.length; i++) {
+            if (inventory[i].id == item.id) {
+                inventory.splice(i, 1);
+                break;
+            }
+        }
     });
-    console.log("processTrade: after removing sold items, inventory: " + inventory);
     //add all items being sold by buyer
     trade.trade.itemsSelling.forEach(function(item) {
         inventory.push(item);
     });
-    console.log("processTrade: after adding bought items, inventory: " + inventory);
+
+    inventoryTableContainer.removeChild(getInventoryTable());
+    inventoryTableContainer.addChild(createInventoryTableElement());
 }
 
 const getNewTrade = () => {
-    console.log("getNewTrade: ask server for new trade");
-    console.log("   inventory: " + inventory);
     $.post( location.protocol + "/newTrade", { inventory: JSON.stringify(inventory) }, function(data) {
-        console.log("getNewTrade: new trade returned from server");
-        console.log(data);
         trade = data;
         tradeWindow.update();
     });
