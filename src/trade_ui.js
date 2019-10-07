@@ -18,13 +18,13 @@ export class TradeWindow extends PIXI.Container {
         // this.portrait.width = 100 //= this.portrait.width/this.portrait.height*portraitHeight
         // this.portrait.height = 100 //portraitHeight
 
-        var wannaSell = new PIXI.Text("what they wanna sell", MESSAGE_STYLE);
+        var wannaSell = new PIXI.Text("I've got", MESSAGE_STYLE);
         this.addChild(wannaSell);
-        wannaSell.position.set(30, 190);
+        wannaSell.position.set(30, 180);
 
-        var wannaBuy = new PIXI.Text("what they wanna buy", MESSAGE_STYLE);
+        var wannaBuy = new PIXI.Text("I'd like your", MESSAGE_STYLE);
         this.addChild(wannaBuy);
-        wannaBuy.position.set(30, 290);
+        wannaBuy.position.set(30, 280);
 
         window.port = this.portrait;
         this.addChild(this.portrait);
