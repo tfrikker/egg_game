@@ -45,7 +45,7 @@ export const MESSAGE_STYLE_LARGE_WRAP = new PIXI.TextStyle({
     // stroke: '#ff3300',
     // strokeThickness: 4
     wordWrap: true,
-    wordWrapWidth: 200
+    wordWrapWidth: 300
 });
 
 export const MESSAGE_STYLE_LARGE = new PIXI.TextStyle({
