@@ -164,7 +164,7 @@ var buyers = [
 		},
 		inventory: items.concat([getItem("magicMushroom"), getItem("sodaCan"), getItem("bagODrugs")]),
 		itemPrefs: {},
-		dealSize: 20,
+		dealSize: 25,
 		saviness: 1
 	},
 	{
@@ -178,7 +178,7 @@ var buyers = [
 		},
 		inventory: items.concat([getItem("moldyOrange"), getItem("extravagantHat")]),
 		itemPrefs: {},
-		dealSize: 20,
+		dealSize: 30,
 		saviness: 1
 	},
 	{
@@ -191,7 +191,7 @@ var buyers = [
 		},
 		inventory: items.concat([getItem("juiceBox"), getItem("fishHook"), getItem("goldfishCrackers"), getItem("goldfishCrackers")]),
 		itemPrefs: {},
-		dealSize: 20,
+		dealSize: 15,
 		saviness: 1
 	},
 	{
@@ -212,7 +212,7 @@ var buyers = [
 		name: "The Rat King",
 		image: "/images/buyers/rat_king.tif",
 		typePrefs: {
-			"cutting": 20,
+			"cutting": 35,
 			"mystery": 5
 		},
 		inventory: items.concat([getItem("mysteriousBriefcase"), getItem("dessicatedLizard")]),
@@ -230,7 +230,7 @@ var buyers = [
 		},
 		inventory: items.concat([getItem("spyDossier"), getItem("floodlight")]),
 		itemPrefs: {},
-		dealSize: 20,
+		dealSize: 25,
 		saviness: 1
 	}
 ];
