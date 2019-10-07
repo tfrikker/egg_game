@@ -1,5 +1,5 @@
-import { tradeWindow, inventoryTableContainer } from './index';
-import { getInventoryTable, createInventoryTableElement } from './base_ui';
+import { tradeWindow } from './index';
+import { updateInventoryTable } from './base_ui';
 
 var inventory = [];
 var trade;
@@ -27,8 +27,7 @@ const processTrade = () => {
         inventory.push(item);
     });
 
-    inventoryTableContainer.removeChild(getInventoryTable());
-    inventoryTableContainer.addChild(createInventoryTableElement());
+    updateInventoryTable();
 }
 
 const getNewTrade = () => {
