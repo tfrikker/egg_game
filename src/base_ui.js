@@ -14,9 +14,8 @@ export function getInventoryTable() {
 }
 
 export class InspectableImage extends PIXI.Sprite{
-    constructor(data, x=0, y=0){
+    constructor(data){
         super(getTexture(data.image));
-        this.position.set(x,y)
         this.flavorText = data.text
         this.interactive = true;
         this.on('pointerdown', () => {
@@ -82,8 +81,9 @@ export function updateInventoryTable() {
     const HORIZ_SPACING = 5;
     var curX = HORIZ_SPACING;
     getInventory().forEach(function(element) {
+        var scaledDown = element.image.substr(0, element.image.indexOf('.')) + "_1x.png";
         var data = {
-            image: element.image,
+            image: scaledDown,
             messageText: element.text
         }
         var sprite = new InspectableImage(data);

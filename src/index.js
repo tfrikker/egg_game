@@ -30,6 +30,7 @@ function main(){
 
     tradeWindow = new TradeWindow();
     app.stage.addChild(tradeWindow);
+    tradeWindow.position.set(0, 0);
     getNewTrade();
 
     const dialogElement = new DialogeElement("some message");
