@@ -33,7 +33,7 @@ var items = [
 	},
 	{
 		id: "moldyOrange",
-		name: "moldyOrange",
+		name: "Moldy Orange",
 		tags: ["food"],
 		image: "/images/items/moldy_orange.png",
 		text: "Green and squishy. Yuck."
@@ -142,8 +142,9 @@ var items = [
 var buyers = [
 	{
 		id: "marty",
-		name: "Marty the Cockroach",
-		image: "/images/buyers/marty.jpg",
+		name: "Marty",
+		fullName: "Marty the Cockroach",
+		image: "/images/buyers/marty.png",
 		typePrefs: {
 			"mystery": 20,
 			"food": 5
@@ -156,8 +157,9 @@ var buyers = [
 	},
 	{
 		id: "winifred",
-		name: "Winifred the Bat",
-		image: "/images/buyers/winifred.tif",
+		name: "Winifred",
+		fullName: "Winifred the Bat",
+		image: "/images/buyers/winifred.png",
 		typePrefs: {
 			"food": 20,
 			"light": 5
@@ -170,8 +172,9 @@ var buyers = [
 	},
 	{
 		id: "moe",
-		name: "Moe the Moth",
-		image: "/images/buyers/moe.tif",
+		name: "Moe",
+		fullName: "Moe the Moth",
+		image: "/images/buyers/moe.png",
 		typePrefs: {
 			"lamp": 30,
 			"food": 5,
@@ -185,8 +188,9 @@ var buyers = [
 	},
 	{
 		id: "goldie",
-		name: "Goldie the Goldfish",
-		image: "/images/buyers/goldie.tif",
+		name: "Goldie",
+		fullName: "Goldie the Goldfish",
+		image: "/images/buyers/goldie.png",
 		typePrefs: {
 			"flair": 20,
 			"cutting": 5
@@ -198,9 +202,10 @@ var buyers = [
 		text: "I'm not supposed to be down here. I was just taking a nap!" 
 	},
 	{
-		id: "whiskers",
-		name: "Mr. Whiskers the Rat",
-		image: "/images/buyers/whiskers.tif",
+		id: "mrWhiskers",
+		name: "Mr. W",
+		fullName: "Mr. Whiskers the Rat",
+		image: "/images/buyers/mr_whiskers.png",
 		typePrefs: {
 			"drink": 20,
 			"carrion": 5
@@ -213,8 +218,9 @@ var buyers = [
 	},
 	{
 		id: "ratKing",
-		name: "The Rat King",
-		image: "/images/buyers/rat_king.tif",
+		name: "RK",
+		fullName: "The Rat King",
+		image: "/images/buyers/rat_king.png",
 		typePrefs: {
 			"cutting": 20,
 			"mystery": 5
@@ -226,9 +232,10 @@ var buyers = [
 		text: "Sure would be nice to get a little alone time around here." 
 	},
 	{
-		id: "bordeaux",
-		name: "Bordeaux the Alligator",
-		image: "/images/buyers/bordeaux.tif",
+		id: "boudreaux",
+		name: "Boudreaux",
+		fullName: "Boudreaux the Alligator",
+		image: "/images/buyers/boudreaux.png",
 		typePrefs: {
 			"carrion": 20,
 			"light": 5

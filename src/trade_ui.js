@@ -11,7 +11,7 @@ export class TradeWindow extends PIXI.Container {
         super();
         const portraitHeight = 128;
 
-        this.background = BGRoundedElem(5, 5, WIDTH - 10, 400, 0xBBBBDD);
+        this.background = BGRoundedElem(5, 5, WIDTH - 10, 400, 0xcfc2b8);
         this.addChild(this.background);
 
         this.characterText = new PIXI.Container();
@@ -27,11 +27,11 @@ export class TradeWindow extends PIXI.Container {
 
         var wannaSell = new PIXI.Text("I've got", MESSAGE_STYLE);
         this.addChild(wannaSell);
-        wannaSell.position.set(30, 180);
+        wannaSell.position.set(30, 220);
 
         var wannaBuy = new PIXI.Text("I'd like your", MESSAGE_STYLE);
         this.addChild(wannaBuy);
-        wannaBuy.position.set(30, 280);
+        wannaBuy.position.set(30, 310);
 
         window.port = this.portrait;
         this.addChild(this.portrait);
@@ -42,19 +42,18 @@ export class TradeWindow extends PIXI.Container {
     }
 
     update(){
+        const portraitSize = 180;
         var trade = getTrade()
         this.portrait.update(trade.buyer)
-        console.log(WIDTH);
-        console.log(WIDTH/2 - 64);
-        this.portrait.position.set(WIDTH/2 - 64, 40);
+        this.portrait.position.set(WIDTH/2 - portraitSize/2, 34);
         this.wants.removeChildren();
         this.offerings.removeChildren();
 
-        this.portrait.width = 128 // NOTE: this shouldn't be necessary, final images can be saved at the correct size
-        this.portrait.height = 128
+        this.portrait.width = portraitSize // NOTE: this shouldn't be necessary, final images can be saved at the correct size
+        this.portrait.height = portraitSize
 
         this.offerings = new PIXI.Container();
-        this.offerings.position.set(20, 200)
+        this.offerings.position.set(20, 240)
         trade.trade.itemsSelling.forEach((itemData, i) => {
             const newItem = new InspectableImage(itemData);
             newItem.position.set(i * 80, 0)
@@ -63,7 +62,7 @@ export class TradeWindow extends PIXI.Container {
         this.addChild(this.offerings)
 
         this.wants = new PIXI.Container();
-        this.wants.position.set(20, 300)
+        this.wants.position.set(20, 330)
         trade.trade.itemsBuying.forEach((itemData, i) => { // TODO: change this to itemsBuying
             const newItem = new InspectableImage(itemData);
             newItem.position.set(i * 80, 0);
@@ -72,9 +71,11 @@ export class TradeWindow extends PIXI.Container {
         this.addChild(this.wants)
 
         this.characterText.removeChildren();
-        var text = new PIXI.Text(trade.buyer.name, MESSAGE_STYLE_LARGE);
+        var text = new PIXI.Text(trade.buyer.fullName, MESSAGE_STYLE_LARGE);
         this.characterText.addChild(text);
         text.anchor.set(0.5);
         text.position.set(WIDTH/2, 20);
+
+        window.setMainDialoge(trade.buyer.name + ': "' + trade.buyer.text + '"')
     }
 }
