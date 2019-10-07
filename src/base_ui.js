@@ -1,5 +1,6 @@
 import {
-  MESSAGE_STYLE
+  MESSAGE_STYLE,
+  MESSAGE_STYLE_LARGE
 } from './styles';
 import { getTexture } from './texture_bag';
 import { processTrade, getNewTrade, getInventory } from './gameState';
@@ -14,9 +15,8 @@ export function getInventoryTable() {
 }
 
 export class InspectableImage extends PIXI.Sprite{
-    constructor(data, x=0, y=0){
+    constructor(data){
         super(getTexture(data.image));
-        this.position.set(x,y)
         this.flavorText = data.text
         this.interactive = true;
         this.on('pointerdown', () => {
@@ -37,7 +37,8 @@ export class DialogeElement extends PIXI.Container{
     this.addChild(BGRoundedElem(10, 0, WIDTH - 20, TABLE_HEIGHT, 0xAAAAAA));
     this.text = new PIXI.Text(message, MESSAGE_STYLE);
     this.addChild(this.text);
-    this.text.position.set(10, TABLE_HEIGHT / 2);
+    this.text.anchor.set(0, 0.5);
+    this.text.position.set(20, TABLE_HEIGHT / 2);
     window.tex = this.text
   }
   setDialogue(message){
@@ -82,8 +83,9 @@ export function updateInventoryTable() {
     const HORIZ_SPACING = 5;
     var curX = HORIZ_SPACING;
     getInventory().forEach(function(element) {
+        var scaledDown = element.image.substr(0, element.image.indexOf('.')) + "_1x.png";
         var data = {
-            image: element.image,
+            image: scaledDown,
             messageText: element.text
         }
         var sprite = new InspectableImage(data);
@@ -115,8 +117,9 @@ function createTradeYesButtonElement() {
 
     button.addChild(BGElem(0, 0, buttonWidth, buttonHeight, 0x00FF00));
 
-    const text = new PIXI.Text("Let's do it!", MESSAGE_STYLE);
+    const text = new PIXI.Text("Let's do it!", MESSAGE_STYLE_LARGE);
     button.addChild(text);
+    text.anchor.set(0.5);
     text.position.set(buttonWidth / 2, buttonHeight / 2);
 
     button.interactive = true;
@@ -136,8 +139,9 @@ function createTradeNoButtonElement() {
 
     button.addChild(BGElem(0, 0, buttonWidth, buttonHeight, 0xFF0000));
 
-    const text = new PIXI.Text("Nah...", MESSAGE_STYLE);
+    const text = new PIXI.Text("Nah...", MESSAGE_STYLE_LARGE);
     button.addChild(text);
+    text.anchor.set(0.5);
     text.position.set(buttonWidth / 2, buttonHeight / 2);
 
     button.interactive = true;

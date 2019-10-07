@@ -30,9 +30,10 @@ function main(){
 
     tradeWindow = new TradeWindow();
     app.stage.addChild(tradeWindow);
+    tradeWindow.position.set(0, 0);
     getNewTrade();
 
-    const dialogElement = new DialogeElement("some message");
+    const dialogElement = new DialogeElement("Click on images for descriptions!");
     window.setMainDialoge = (message) => {
       dialogElement.setDialogue(message);
     }

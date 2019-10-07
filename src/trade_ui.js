@@ -1,8 +1,8 @@
 import { processTrade, getTrade } from './gameState';
 import { getTexture } from './texture_bag';
 import { WIDTH, HEIGHT } from './index';
-import { InspectableImage, BGElem } from './base_ui';
-import { MESSAGE_STYLE } from './styles';
+import { InspectableImage, BGRoundedElem } from './base_ui';
+import { MESSAGE_STYLE, MESSAGE_STYLE_LARGE } from './styles';
 
 
 export class TradeWindow extends PIXI.Container {
@@ -11,24 +11,42 @@ export class TradeWindow extends PIXI.Container {
         super();
         const portraitHeight = 128;
 
-
-        this.background = BGElem(0, 0, WIDTH, 400, 0xFFFFFF);
+        this.background = BGRoundedElem(5, 5, WIDTH - 10, 400, 0xBBBBDD);
         this.addChild(this.background);
 
-        this.portrait = new InspectableImage({image: './images/items/egg.png', text:'flavor!'}, 10, 10)
+        this.characterText = new PIXI.Container();
+        var text = new PIXI.Text("", MESSAGE_STYLE_LARGE);
+        this.characterText.addChild(text);
+        text.anchor.set(0.5);
+        text.position.set(WIDTH/2, 20);
+        this.addChild(this.characterText);
+
+        this.portrait = new InspectableImage({image: './images/items/egg.png', text:'flavor!'})
         // this.portrait.width = 100 //= this.portrait.width/this.portrait.height*portraitHeight
         // this.portrait.height = 100 //portraitHeight
+
+        var wannaSell = new PIXI.Text("I've got", MESSAGE_STYLE);
+        this.addChild(wannaSell);
+        wannaSell.position.set(30, 180);
+
+        var wannaBuy = new PIXI.Text("I'd like your", MESSAGE_STYLE);
+        this.addChild(wannaBuy);
+        wannaBuy.position.set(30, 280);
+
         window.port = this.portrait;
         this.addChild(this.portrait);
+        this.portrait.position.set(WIDTH/2 - (this.portrait.width / 2), 40);
 
         this.wants = new PIXI.Container();
         this.offerings = new PIXI.Container();
-
     }
 
     update(){
         var trade = getTrade()
         this.portrait.update(trade.buyer)
+        console.log(WIDTH);
+        console.log(WIDTH/2 - 64);
+        this.portrait.position.set(WIDTH/2 - 64, 40);
         this.wants.removeChildren();
         this.offerings.removeChildren();
 
@@ -36,34 +54,27 @@ export class TradeWindow extends PIXI.Container {
         this.portrait.height = 128
 
         this.offerings = new PIXI.Container();
-        this.offerings.position.set(WIDTH/2, 20)
+        this.offerings.position.set(20, 200)
         trade.trade.itemsSelling.forEach((itemData, i) => {
             const newItem = new InspectableImage(itemData);
-            switch (i) {
-              case 0:
-                newItem.position.set(0, 0);
-                break;
-              case 1:
-                newItem.position.set(64 + 10, 0);
-                break;
-              case 2:
-                newItem.position.set(0, 64 + 10);
-                break;
-              default:
-                newItem.position.set(64 + 10, 64 + 10);
-            }
+            newItem.position.set(i * 80, 0)
             this.offerings.addChild(newItem);
         });
         this.addChild(this.offerings)
 
         this.wants = new PIXI.Container();
-        this.wants.position.set(15, 200)
+        this.wants.position.set(20, 300)
         trade.trade.itemsBuying.forEach((itemData, i) => { // TODO: change this to itemsBuying
             const newItem = new InspectableImage(itemData);
-            newItem.position.set(30 + i * 80, 0);
+            newItem.position.set(i * 80, 0);
             this.wants.addChild(newItem);
         });
         this.addChild(this.wants)
 
+        this.characterText.removeChildren();
+        var text = new PIXI.Text(trade.buyer.name, MESSAGE_STYLE_LARGE);
+        this.characterText.addChild(text);
+        text.anchor.set(0.5);
+        text.position.set(WIDTH/2, 20);
     }
 }
