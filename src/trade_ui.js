@@ -2,7 +2,7 @@ import { processTrade, getTrade } from './gameState';
 import { getTexture } from './texture_bag';
 import { WIDTH, HEIGHT } from './index';
 import { InspectableImage, BGRoundedElem } from './base_ui';
-import { MESSAGE_STYLE } from './styles';
+import { MESSAGE_STYLE, MESSAGE_STYLE_LARGE } from './styles';
 
 
 export class TradeWindow extends PIXI.Container {
@@ -13,6 +13,13 @@ export class TradeWindow extends PIXI.Container {
 
         this.background = BGRoundedElem(5, 5, WIDTH - 10, 400, 0xBBBBDD);
         this.addChild(this.background);
+
+        this.characterText = new PIXI.Container();
+        var text = new PIXI.Text("", MESSAGE_STYLE_LARGE);
+        this.characterText.addChild(text);
+        text.anchor.set(0.5);
+        text.position.set(WIDTH/2, 20);
+        this.addChild(this.characterText);
 
         this.portrait = new InspectableImage({image: './images/items/egg.png', text:'flavor!'})
         // this.portrait.width = 100 //= this.portrait.width/this.portrait.height*portraitHeight
@@ -28,7 +35,7 @@ export class TradeWindow extends PIXI.Container {
 
         window.port = this.portrait;
         this.addChild(this.portrait);
-        this.portrait.position.set(WIDTH/2 - (this.portrait.width / 2), 20);
+        this.portrait.position.set(WIDTH/2 - (this.portrait.width / 2), 40);
 
         this.wants = new PIXI.Container();
         this.offerings = new PIXI.Container();
@@ -39,7 +46,7 @@ export class TradeWindow extends PIXI.Container {
         this.portrait.update(trade.buyer)
         console.log(WIDTH);
         console.log(WIDTH/2 - 64);
-        this.portrait.position.set(WIDTH/2 - 64, 20);
+        this.portrait.position.set(WIDTH/2 - 64, 40);
         this.wants.removeChildren();
         this.offerings.removeChildren();
 
@@ -63,5 +70,11 @@ export class TradeWindow extends PIXI.Container {
             this.wants.addChild(newItem);
         });
         this.addChild(this.wants)
+
+        this.characterText.removeChildren();
+        var text = new PIXI.Text(trade.buyer.name, MESSAGE_STYLE_LARGE);
+        this.characterText.addChild(text);
+        text.anchor.set(0.5);
+        text.position.set(WIDTH/2, 20);
     }
 }
