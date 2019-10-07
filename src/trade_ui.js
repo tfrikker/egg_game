@@ -25,11 +25,11 @@ export class TradeWindow extends PIXI.Container {
         // this.portrait.width = 100 //= this.portrait.width/this.portrait.height*portraitHeight
         // this.portrait.height = 100 //portraitHeight
 
-        var wannaSell = new PIXI.Text("I've got", MESSAGE_STYLE);
+        var wannaSell = new PIXI.Text("Offering...", MESSAGE_STYLE);
         this.addChild(wannaSell);
         wannaSell.position.set(30, 220);
 
-        var wannaBuy = new PIXI.Text("I'd like your", MESSAGE_STYLE);
+        var wannaBuy = new PIXI.Text("in exchange for...", MESSAGE_STYLE);
         this.addChild(wannaBuy);
         wannaBuy.position.set(30, 310);
 
@@ -76,6 +76,6 @@ export class TradeWindow extends PIXI.Container {
         text.anchor.set(0.5);
         text.position.set(WIDTH/2, 20);
 
-        window.setMainDialoge(trade.buyer.name + ': "' + trade.buyer.text + '"')
+        window.setMainDialoge(trade.buyer.name + ': ' + trade.buyer.text)
     }
 }

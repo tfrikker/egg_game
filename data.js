@@ -153,7 +153,7 @@ var buyers = [
 		itemPrefs: {},
 		dealSize: 20,
 		saviness: 1,
-		text: "Aw, you poor kid – y'ain't got nothin? Here, have an egg. You'll need it in this economy."
+		text: "Hey kid, wanna trade?"
 	},
 	{
 		id: "winifred",
@@ -168,7 +168,7 @@ var buyers = [
 		itemPrefs: {},
 		dealSize: 20,
 		saviness: 1,
-		text: "Do you want any of this? I'm trying this new cleanse." 
+		text: "\"Do you want any of this? I'm trying this new cleanse.\"" 
 	},
 	{
 		id: "moe",
@@ -184,7 +184,7 @@ var buyers = [
 		itemPrefs: {},
 		dealSize: 20,
 		saviness: 1,
-		text: "Love Actuality Multiplicity Peace." 
+		text: "\"Love Actuality Multiplicity Peace.\"" 
 	},
 	{
 		id: "goldie",
@@ -199,7 +199,7 @@ var buyers = [
 		itemPrefs: {},
 		dealSize: 20,
 		saviness: 1,
-		text: "I'm not supposed to be down here. I was just taking a nap!" 
+		text: "\"I'm not supposed to be down here. I was just taking a nap!\"" 
 	},
 	{
 		id: "mrWhiskers",
@@ -214,7 +214,7 @@ var buyers = [
 		itemPrefs: {},
 		dealSize: 20,
 		saviness: 1,
-		text: "Why, hello there, old chap! Got any mixers for my tipple?" 
+		text: "\"Why, hello there, old chap! Got any mixers for my tipple?\"" 
 	},
 	{
 		id: "ratKing",
@@ -229,7 +229,7 @@ var buyers = [
 		itemPrefs: {},
 		dealSize: 20,
 		saviness: 1,
-		text: "Sure would be nice to get a little alone time around here." 
+		text: "\"Sure would be nice to get a little alone time around here.\"" 
 	},
 	{
 		id: "boudreaux",
@@ -244,7 +244,7 @@ var buyers = [
 		itemPrefs: {},
 		dealSize: 20,
 		saviness: 1,
-		text: "Don't let the chompers fool ya. I'm just a humble collector of old sewer curios." 
+		text: "\"Don't let the chompers fool ya. I'm just a humble collector of old sewer curios.\"" 
 	}
 ];
 
