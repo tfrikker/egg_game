@@ -37,7 +37,7 @@ function showStartScreen(appStage) {
     gameDesc.anchor.set(0.5);
     gameDesc.position.set(WIDTH/2, 150);
 
-    const credits = new PIXI.Text("Built in 48 hours for Ludum Dare 2019 with love by Zach, Maryana, Sam, and Tom", MESSAGE_STYLE_CREDITS);
+    const credits = new PIXI.Text("Built in 72 hours for Ludum Dare 2019 with love by Zach, Maryana, Sam, and Tom", MESSAGE_STYLE_CREDITS);
     appStage.addChild(credits);
     credits.anchor.set(0.5);
     credits.position.set(WIDTH/2, HEIGHT - 50);
